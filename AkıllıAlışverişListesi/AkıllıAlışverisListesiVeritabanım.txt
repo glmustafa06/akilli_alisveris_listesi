@@ -1,0 +1,210 @@
+USE [master]
+GO
+/****** Object:  Database [AkilliAlisveris]    Script Date: 20.12.2024 23:26:45 ******/
+CREATE DATABASE [AkilliAlisveris]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'AkilliAlisveris', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\AkilliAlisveris.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'AkilliAlisveris_log', FILENAME = N'C:\Program Files\Microsoft SQL Server\MSSQL16.MSSQLSERVER\MSSQL\DATA\AkilliAlisveris_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT, LEDGER = OFF
+GO
+ALTER DATABASE [AkilliAlisveris] SET COMPATIBILITY_LEVEL = 160
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [AkilliAlisveris].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [AkilliAlisveris] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET AUTO_CLOSE OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [AkilliAlisveris] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [AkilliAlisveris] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET  DISABLE_BROKER 
+GO
+ALTER DATABASE [AkilliAlisveris] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [AkilliAlisveris] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET RECOVERY FULL 
+GO
+ALTER DATABASE [AkilliAlisveris] SET  MULTI_USER 
+GO
+ALTER DATABASE [AkilliAlisveris] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [AkilliAlisveris] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [AkilliAlisveris] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [AkilliAlisveris] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [AkilliAlisveris] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [AkilliAlisveris] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+EXEC sys.sp_db_vardecimal_storage_format N'AkilliAlisveris', N'ON'
+GO
+ALTER DATABASE [AkilliAlisveris] SET QUERY_STORE = ON
+GO
+ALTER DATABASE [AkilliAlisveris] SET QUERY_STORE (OPERATION_MODE = READ_WRITE, CLEANUP_POLICY = (STALE_QUERY_THRESHOLD_DAYS = 30), DATA_FLUSH_INTERVAL_SECONDS = 900, INTERVAL_LENGTH_MINUTES = 60, MAX_STORAGE_SIZE_MB = 1000, QUERY_CAPTURE_MODE = AUTO, SIZE_BASED_CLEANUP_MODE = AUTO, MAX_PLANS_PER_QUERY = 200, WAIT_STATS_CAPTURE_MODE = ON)
+GO
+USE [AkilliAlisveris]
+GO
+/****** Object:  Table [dbo].[Markets]    Script Date: 20.12.2024 23:26:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Markets](
+	[marketId] [int] IDENTITY(1,1) NOT NULL,
+	[marketName] [nvarchar](100) NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[marketId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Products]    Script Date: 20.12.2024 23:26:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Products](
+	[productId] [int] IDENTITY(1,1) NOT NULL,
+	[marketId] [int] NULL,
+	[productName] [nvarchar](100) NOT NULL,
+	[price] [decimal](10, 2) NOT NULL,
+	[stockQuantity] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[productId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[ShoppingList]    Script Date: 20.12.2024 23:26:45 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[ShoppingList](
+	[shoppingListId] [int] IDENTITY(1,1) NOT NULL,
+	[productId] [int] NULL,
+	[quantity] [int] NOT NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[shoppingListId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Markets] ON 
+
+INSERT [dbo].[Markets] ([marketId], [marketName]) VALUES (1, N'A101')
+INSERT [dbo].[Markets] ([marketId], [marketName]) VALUES (2, N'Şok')
+INSERT [dbo].[Markets] ([marketId], [marketName]) VALUES (3, N'Bim')
+SET IDENTITY_INSERT [dbo].[Markets] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Products] ON 
+
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (1, 1, N'Peynir', CAST(25.00 AS Decimal(10, 2)), 100)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (2, 1, N'Zeytin', CAST(15.00 AS Decimal(10, 2)), 50)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (3, 1, N'Ekme', CAST(3.50 AS Decimal(10, 2)), 200)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (4, 1, N'Süt', CAST(5.00 AS Decimal(10, 2)), 150)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (5, 1, N'Yumurta', CAST(12.00 AS Decimal(10, 2)), 100)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (6, 1, N'Makarna', CAST(8.00 AS Decimal(10, 2)), 180)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (7, 1, N'Pirinç', CAST(9.50 AS Decimal(10, 2)), 100)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (8, 1, N'Tuz', CAST(2.00 AS Decimal(10, 2)), 250)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (9, 1, N'Kahve', CAST(35.00 AS Decimal(10, 2)), 50)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (10, 1, N'Çay', CAST(15.00 AS Decimal(10, 2)), 120)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (11, 1, N'Şeker', CAST(10.00 AS Decimal(10, 2)), 150)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (12, 1, N'Bira', CAST(18.00 AS Decimal(10, 2)), 60)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (13, 1, N'Soda', CAST(6.00 AS Decimal(10, 2)), 200)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (14, 1, N'Pizza', CAST(22.00 AS Decimal(10, 2)), 70)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (15, 1, N'Cips', CAST(5.00 AS Decimal(10, 2)), 180)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (16, 1, N'Atıştırmalık', CAST(3.00 AS Decimal(10, 2)), 220)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (17, 1, N'Yıkama Deterjanı', CAST(30.00 AS Decimal(10, 2)), 80)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (18, 1, N'Temizlik Spreyi', CAST(12.00 AS Decimal(10, 2)), 110)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (19, 1, N'Diğer Ürün', CAST(7.50 AS Decimal(10, 2)), 50)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (20, 2, N'Peynir', CAST(26.50 AS Decimal(10, 2)), 120)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (21, 2, N'Zeytin', CAST(16.00 AS Decimal(10, 2)), 70)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (22, 2, N'Ekme', CAST(4.00 AS Decimal(10, 2)), 220)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (23, 2, N'Süt', CAST(5.50 AS Decimal(10, 2)), 160)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (24, 2, N'Yumurta', CAST(13.00 AS Decimal(10, 2)), 110)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (25, 2, N'Makarna', CAST(8.50 AS Decimal(10, 2)), 190)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (26, 2, N'Pirinç', CAST(10.00 AS Decimal(10, 2)), 110)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (27, 2, N'Tuz', CAST(2.50 AS Decimal(10, 2)), 240)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (28, 2, N'Kahve', CAST(33.00 AS Decimal(10, 2)), 60)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (29, 2, N'Çay', CAST(16.50 AS Decimal(10, 2)), 130)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (30, 2, N'Şeker', CAST(11.00 AS Decimal(10, 2)), 160)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (31, 2, N'Bira', CAST(19.50 AS Decimal(10, 2)), 70)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (32, 2, N'Soda', CAST(6.50 AS Decimal(10, 2)), 210)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (33, 2, N'Pizza', CAST(23.00 AS Decimal(10, 2)), 80)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (34, 2, N'Cips', CAST(5.50 AS Decimal(10, 2)), 190)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (35, 2, N'Atıştırmalık', CAST(3.50 AS Decimal(10, 2)), 230)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (36, 2, N'Yıkama Deterjanı', CAST(32.00 AS Decimal(10, 2)), 90)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (37, 2, N'Temizlik Spreyi', CAST(13.50 AS Decimal(10, 2)), 120)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (38, 2, N'Diğer Ürün', CAST(8.00 AS Decimal(10, 2)), 60)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (39, 3, N'Peynir', CAST(24.00 AS Decimal(10, 2)), 130)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (40, 3, N'Zeytin', CAST(14.50 AS Decimal(10, 2)), 60)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (41, 3, N'Ekme', CAST(3.20 AS Decimal(10, 2)), 250)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (42, 3, N'Süt', CAST(5.20 AS Decimal(10, 2)), 170)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (43, 3, N'Yumurta', CAST(11.50 AS Decimal(10, 2)), 120)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (44, 3, N'Makarna', CAST(7.80 AS Decimal(10, 2)), 200)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (45, 3, N'Pirinç', CAST(9.20 AS Decimal(10, 2)), 120)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (46, 3, N'Tuz', CAST(2.30 AS Decimal(10, 2)), 260)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (47, 3, N'Kahve', CAST(34.00 AS Decimal(10, 2)), 50)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (48, 3, N'Çay', CAST(14.50 AS Decimal(10, 2)), 140)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (49, 3, N'Şeker', CAST(9.50 AS Decimal(10, 2)), 170)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (50, 3, N'Bira', CAST(17.50 AS Decimal(10, 2)), 80)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (51, 3, N'Soda', CAST(6.20 AS Decimal(10, 2)), 220)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (52, 3, N'Pizza', CAST(21.00 AS Decimal(10, 2)), 90)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (53, 3, N'Cips', CAST(5.20 AS Decimal(10, 2)), 200)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (54, 3, N'Atıştırmalık', CAST(3.20 AS Decimal(10, 2)), 240)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (55, 3, N'Yıkama Deterjanı', CAST(28.00 AS Decimal(10, 2)), 100)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (56, 3, N'Temizlik Spreyi', CAST(12.50 AS Decimal(10, 2)), 130)
+INSERT [dbo].[Products] ([productId], [marketId], [productName], [price], [stockQuantity]) VALUES (57, 3, N'Diğer Ürün', CAST(7.00 AS Decimal(10, 2)), 70)
+SET IDENTITY_INSERT [dbo].[Products] OFF
+GO
+ALTER TABLE [dbo].[Products]  WITH CHECK ADD FOREIGN KEY([marketId])
+REFERENCES [dbo].[Markets] ([marketId])
+GO
+ALTER TABLE [dbo].[ShoppingList]  WITH CHECK ADD FOREIGN KEY([productId])
+REFERENCES [dbo].[Products] ([productId])
+GO
+USE [master]
+GO
+ALTER DATABASE [AkilliAlisveris] SET  READ_WRITE 
+GO
